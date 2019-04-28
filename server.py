@@ -1,6 +1,7 @@
 import os
 from flask import Flask, request, redirect, url_for, render_template, flash
 from werkzeug.utils import secure_filename
+import yolo_wrapper
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
@@ -28,5 +29,7 @@ def hello():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('uploaded_file', filename=filename))
+            img_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            htmlPath = yolo_wrapper.runYolo(img_path)
+            os.system("open " + htmlPath)
     return render_template('index.html')
