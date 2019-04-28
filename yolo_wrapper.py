@@ -1,37 +1,39 @@
-import argparse
+import os
+import time
 from subprocess import call
 import cv2
+import html_converter
+from dotenv import load_dotenv
 
-parser = argparse.ArgumentParser()
-parser.add_argument("-i", "--image", required=True, help="path to the input image")
-args = vars(parser.parse_args())
+def runYolo(img):
+    load_dotenv()
+    img = cv2.imread(img)
+    img = cv2.resize(img,(508,704))
+    img2 = cv2.imwrite("data/test.jpg",img)
 
-img = cv2.imread(args["image"])
-img = cv2.resize(img,(508,704))
-img2 = cv2.imwrite("data/testbeh.jpg",img)
+    darknet_path = os.getenv("DARKNET_BINARY_PATH")
+    datacfg = os.getenv("DATA_CFG")
+    cfgfile = os.getenv("CFG_FILE")
+    weightfile = os.getenv("WEIGHT_FILE")
+    img = 'data/test.jpg'
 
-darknet_path = 'darknet.exe detector test'
-datacfg = 'data/obj.data'
-cfgfile = 'yolo-obj.cfg'
-weightfile = 'yolo-obj_11000.weights'
-img = 'data/testbeh.jpg'
+    call(darknet_path + " detector test " + datacfg + " " + cfgfile + " " + weightfile + " " + img, shell=True)
 
-call(darknet_path + " " + datacfg + " " + cfgfile + " " + weightfile + " " + img, shell=True)
+    f = open(os.getenv("BBOX_OUTPUT_FILE"),"r")
+    boundingBoxes = []
+    parsedObjects = []
+    for line in f:
+        boundingBoxes.append(line)
 
-f = open("BBoxOutputFile.txt","r")
-myList = []
-finaldict = []
-for line in f:
-    myList.append(line)
+    for j in range(len(boundingBoxes)):
+        parsedData = boundingBoxes[j].split(',')
+        parsedObjects.append({
+            'objID': parsedData[0],
+            'name': parsedData[1],
+            'xPos': parsedData[2],
+            'yPos': parsedData[3],
+            'width': parsedData[4],
+            'height': parsedData[5].rstrip()
+        })
 
-for j in range(len(myList)):
-    parsedData = myList[j].split(',')
-    finaldict.append({
-        'objID': parsedData[0],
-        'name': parsedData[1],
-        'xPos': parsedData[2],
-        'yPos': parsedData[3],
-        'width': parsedData[4],
-        'height': parsedData[5].rstrip()
-    })
-print(finaldict)
+    return html_converter.yoloToHTML(parsedObjects)

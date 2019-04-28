@@ -4,3 +4,4 @@ data
 output
 bad.list
 predictions.jpg
+.env
