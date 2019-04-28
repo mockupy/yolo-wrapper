@@ -1,2 +1,6 @@
 __pycache__/
 uploads
+data
+output
+bad.list
+predictions.jpg
