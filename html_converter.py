@@ -1,42 +1,7 @@
 import os
 import time
 
-def yoloToHTML():
-    test = [
-    {
-    'name': 'image',
-    'yPos': '93',
-    'height': '114',
-    'width': '290',
-    'objID': '0',
-    'xPos': '254'
-    }, 
-    {
-    'name': 'button',
-    'yPos': '287',
-    'height': '129',
-    'width': '198',
-    'objID': '1',
-    'xPos': '147'
-    }, 
-    {
-    'name': 'radiobutton',
-    'yPos': '104',
-    'height': '102',
-    'width': '242',
-    'objID': '3',
-    'xPos': '390'
-    }, 
-    {
-    'name': 'checkbox',
-    'yPos': '411',
-    'height': '140',
-    'width': '181',
-    'objID': '2',
-    'xPos': '125'
-    },
-    ]
-    
+def yoloToHTML(predictions):
     htmlImage=r'<img src="smiley.gif" alt="Smiley face"'
     htmlButton=r'<button type="button"'
     htmlRadioButton=r'<input type="radio" name="gender" value="male"'
@@ -45,13 +10,13 @@ def yoloToHTML():
 
     addedArray = []
 
-    for i in test:
+    for i in predictions:
         addedArray.append(int(i["yPos"]))
 
     addedArray = sorted(addedArray)
     
     for i in addedArray:
-        for t in test:
+        for t in predictions:
             if i == (int(t["yPos"])):
                 if (t['name']=='image'):
                     height=t['height']
@@ -90,6 +55,4 @@ def yoloToHTML():
          f.write(outputHtmlText+lastBody)
          f.close()
 
-    print("Filename: {}\nFilepath: {}".format(filename,path))
-
-yoloToHTML()
+    return savedpath
