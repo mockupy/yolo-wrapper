@@ -30,10 +30,10 @@ def runYolo(img):
         parsedObjects.append({
             'objID': parsedData[0],
             'name': parsedData[1],
-            'xPos': parsedData[2],
-            'yPos': parsedData[3],
-            'width': parsedData[4],
-            'height': parsedData[5].rstrip()
+            'xPos': int(parsedData[2]) * 2,
+            'yPos': int(parsedData[3]) * 2,
+            'width': int(parsedData[4]) * 2,
+            'height': int(parsedData[5].rstrip()) * 2
         })
 
     return html_converter.yoloToHTML(parsedObjects)
