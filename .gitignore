@@ -5,3 +5,4 @@ output
 bad.list
 predictions.jpg
 .env
+venv/
