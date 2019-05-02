@@ -10,30 +10,35 @@ def generate_scaffold(cssPath, body):
     return outputHtmlText
 
 def generate_image(xPos, yPos, height, width):
-    selector = str(int(time.time())) + "image"
+    selector = "image" + str(int(time.time()))
     imgOutput = "<img id='"+ selector +"' src='https://via.placeholder.com/"+ str(width) +"x"+ str(height) +"'>"
     generate_css(xPos, yPos, height, width, selector)
     return imgOutput
 
 def generate_button(xPos, yPos, height, width):
-    selector = str(int(time.time())) + "button"
+    selector = "button" + str(int(time.time()))
     buttonOutput = "<button id='"+ selector +"'>Button</button>"
     generate_css(xPos, yPos, height, width, selector)
     return buttonOutput
 
 def generate_radiobutton(xPos, yPos, height, width):
-    selector = str(int(time.time())) + "rbutton"
+    selector = "rbutton" + str(int(time.time()))
     rButtonOutput = "<input type='radio' id='"+ selector +"'>\n"
     rButtonOutput += "<label for='"+ selector +"'>Radio button label</label>"
     generate_css(xPos, yPos, height, width, selector)
     return rButtonOutput
 
 def generate_checkbox(xPos, yPos, height, width):
-    selector = str(int(time.time())) + "checkbox"
+    selector = "checkbox" + str(int(time.time()))
     checkboxOutput = "<input type='checkbox' id='"+ selector +"'>\n"
     checkboxOutput += "<label for='"+ selector +"'>Checkbox label</label>"
     generate_css(xPos, yPos, height, width, selector)
     return checkboxOutput
 
 def generate_css(xPos, yPos, height, width, selector):
-    pass
+    cssPath = "./data/output.css"
+    with open(cssPath, "a") as f:
+        cssOutput = "#"+ selector + "{\n"
+        cssOutput += "position: absolute;\ntop:"+ str(yPos) + "px;\nleft:"+str(xPos)+"px;\n}\n"
+        f.write(cssOutput)
+        f.close()

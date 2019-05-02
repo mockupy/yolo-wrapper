@@ -38,7 +38,7 @@ def yoloToHTML(predictions):
 
 
     cssFilename = str(int(time.time())) + "yolo.css"
-    cssPath = "./output/" + cssFilename
+    cssPath = os.getcwd() + "/output/" + cssFilename
     shutil.copy("./data/output.css", cssPath)
     
     htmlOutput = patterns.generate_scaffold(cssPath, bodyContent)
