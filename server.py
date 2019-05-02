@@ -31,5 +31,8 @@ def hello():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             img_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             htmlPath = yolo_wrapper.runYolo(img_path)
-            os.system("open " + htmlPath)
+            try:
+                os.startfile(htmlPath) # for Windows
+            except AttributeError:
+                os.system("open " + htmlPath) # for macOS
     return render_template('index.html')
