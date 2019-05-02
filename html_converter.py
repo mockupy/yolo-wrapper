@@ -1,14 +1,12 @@
 import os
 import time
+import patterns
+import shutil
 
 def yoloToHTML(predictions):
-    htmlImage=r'<img src="smiley.gif" alt="Smiley face"'
-    htmlButton=r'<button type="button"'
-    htmlRadioButton=r'<input type="radio" name="gender" value="male"'
-    htmlCheckbox=r'<input type="checkbox" name="vehicle1" value="Bike"'
-    outputHtmlText=r'<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>Document</title></head><body>' + "\n"
 
     addedArray = []
+    bodyContent = ""
 
     for i in predictions:
         addedArray.append(int(i["yPos"]))
@@ -21,38 +19,39 @@ def yoloToHTML(predictions):
                 if (t['name']=='image'):
                     height=t['height']
                     width=t['width']
-                    outputHtmlText += htmlImage + " height ='{}'".format(height) + " width='{}'".format(width) + ">" +"\n"
+                    bodyContent += patterns.generate_image(t['xPos'], t['yPos'], height, width)
                 
                 if (t['name']=='button'):
                     height=t['height']
                     width=t['width']
-                    outputHtmlText+=htmlButton + " height = '{}'".format(height) + " width='{}'".format(width) + "></button>" + "\n"
+                    bodyContent += patterns.generate_button(t['xPos'], t['yPos'], height, width)
                 
                 if (t['name']=='checkbox'):
                     height=t['height']
                     width=t['width']
-                    outputHtmlText+=htmlCheckbox + " height = '{}'".format(height) + " width='{}'".format(width) + ">" + "\n"
+                    bodyContent += patterns.generate_checkbox(t['xPos'], t['yPos'], height, width)
                 
                 if (t['name']=='radiobutton'):
                     height=t['height']
                     width=t['width']
-                    outputHtmlText+=htmlRadioButton + " height = '{}'".format(height) + " width='{}'".format(width) + ">" + "\n"
+                    bodyContent += patterns.generate_radiobutton(t['xPos'], t['yPos'], height, width)
 
-    lastBody = r'</body></html>'
+
+    cssFilename = str(int(time.time())) + "yolo.css"
+    cssPath = "./output/" + cssFilename
+    shutil.copy("./data/output.css", cssPath)
+    
+    htmlOutput = patterns.generate_scaffold(cssPath, bodyContent)
 
     path = os.getcwd() + "/output"
-
-    str(int(time.time())) + "yolo.html"
-
-    filename = str(int(time.time())) + "yolo.html"
-
-    savedpath = path + "/" + filename
+    htmlFilename = str(int(time.time())) + "yolo.html"
+    savedpath = path + "/" + htmlFilename
 
     if not os.path.exists(path):
          os.makedirs(os.path.dirname(savedpath))
          
     with open(savedpath, "w") as f:
-         f.write(outputHtmlText+lastBody)
+         f.write(htmlOutput)
          f.close()
 
     return savedpath
