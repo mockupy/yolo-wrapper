@@ -4,5 +4,6 @@ data
 output
 bad.list
 predictions.jpg
+BBoxOutputFile.txt
 .env
 venv/
