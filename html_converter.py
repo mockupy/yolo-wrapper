@@ -13,6 +13,8 @@ def yoloToHTML(predictions):
 
     addedArray = sorted(addedArray)
     
+    patterns.initialize_output_css()
+
     for i in addedArray:
         for t in predictions:
             if i == (int(t["yPos"])):
@@ -48,10 +50,10 @@ def yoloToHTML(predictions):
     savedpath = path + "/" + htmlFilename
 
     if not os.path.exists(path):
-         os.makedirs(os.path.dirname(savedpath))
+        os.makedirs(os.path.dirname(savedpath))
          
     with open(savedpath, "w") as f:
-         f.write(htmlOutput)
-         f.close()
+        f.write(htmlOutput)
+        f.close()
 
     return savedpath

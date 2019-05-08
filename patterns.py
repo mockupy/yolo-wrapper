@@ -42,3 +42,7 @@ def generate_css(xPos, yPos, height, width, selector):
         cssOutput += "position: absolute;\ntop:"+ str(yPos) + "px;\nleft:"+str(xPos)+"px;\n}\n"
         f.write(cssOutput)
         f.close()
+
+def initialize_output_css():
+        cssPath = "./data/output.css"
+        open(cssPath, 'w').close()
