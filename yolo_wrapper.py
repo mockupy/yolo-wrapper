@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 def runYolo(img):
     load_dotenv()
     img = cv2.imread(img)
-    img = cv2.resize(img,(508,704))
+    img = cv2.resize(img,(308,504))
     img2 = cv2.imwrite("data/test.jpg",img)
 
     darknet_path = os.getenv("DARKNET_BINARY_PATH")
